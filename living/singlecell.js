@@ -14,6 +14,8 @@ class SingleCell extends Living{
 		this.id = this.getId();
 		this.name = SingleCellEnum.properties[this.type].name;
 		this.max_life = SingleCellEnum.properties[this.type].max_life;
+		this.x = random(0, width);
+		this.y = random(0, height);
 	}
 
 	uniqueId(){
@@ -40,15 +42,25 @@ class SingleCell extends Living{
 class Creature_1 extends SingleCell{
 	constructor(){
 		super(SingleCellEnum.CREATURE_1);
+		this.width = 20;
+		this.height = 10;
+	}
+
+	appear(x, y){
+		ellipse(x, y, this.width, this.height)
+	}
+
+	move(){
+		this.x += 1
+		this.y += 1
+		this.appear(this.x, this.y);
 	}
 
 	live(){
 		console.log("<Creature_1.live>")
-		this.life = true
+		this.life = true;
+		this.move();
 	}
-
-	move(){}
-
 
 
 }
