@@ -42,4 +42,13 @@ class Creature_1 extends SingleCell{
 		super(SingleCellEnum.CREATURE_1);
 	}
 
+	live(){
+		console.log("<Creature_1.live>")
+		this.life = true
+	}
+
+	move(){}
+
+
+
 }
