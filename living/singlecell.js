@@ -14,8 +14,13 @@ class SingleCell extends Living{
 		this.id = this.getId();
 		this.name = SingleCellEnum.properties[this.type].name;
 		this.max_life = SingleCellEnum.properties[this.type].max_life;
-		this.x = random(0, width);
-		this.y = random(0, height);
+		this.xoffset = random(0, width);
+		this.yoffset = random(0, height);
+		// this.x = random(0, width);
+		// this.y = random(0, height);
+		this.x = 0;
+		this.y = 0;
+		// console.log("X: " + this.x + " --- Y: " + this.y);
 	}
 
 	uniqueId(){
@@ -51,13 +56,17 @@ class Creature_1 extends SingleCell{
 	}
 
 	move(){
-		this.x += 1
-		this.y += 1
+		this.xoffset += 0.001;
+		this.yoffset += 0.001;
+		// console.log("offset: " + this.offset)
+		this.x = noise(this.xoffset) * width * 1.2;
+		this.y = noise(this.yoffset) * height * 1.2;
+		// console.log("X: " + this.x + " --- Y: " + this.y);
 		this.appear(this.x, this.y);
 	}
 
 	live(){
-		console.log("<Creature_1.live>")
+		// console.log("<" + this.id +".live>")
 		this.life = true;
 		this.move();
 	}
