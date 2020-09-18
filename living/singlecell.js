@@ -14,10 +14,12 @@ class SingleCell extends Living{
 		this.id = this.getId();
 		this.name = SingleCellEnum.properties[this.type].name;
 		this.max_life = SingleCellEnum.properties[this.type].max_life;
-		this.xoffset = random(0, width);
-		this.yoffset = random(0, height);
-		this.x = 0;
-		this.y = 0;
+
+		this.position = new createVector(random(0, width), random(0, height));
+		// this.position = new createVector(width/2, height/2);
+		this.velocity = new createVector(0, 0);
+		this.acceleration = new createVector(0, 0);
+		
 		// console.log("X: " + this.x + " --- Y: " + this.y);
 	}
 
@@ -40,29 +42,49 @@ class SingleCell extends Living{
 class Creature_1 extends SingleCell{
 	constructor(){
 		super(SingleCellEnum.CREATURE_1);
-		this.width = 20;
-		this.height = 10;
+	
+		this.phase = random(0,1000);
+		// console.log("X: " + this.x + " --- Y: " + this.y);
 	}
 
-	appear(x, y){
-		ellipse(x, y, this.width, this.height)
+	shape(){
+		
+		beginShape();
+		push();
+		translate(this.position.x, this.position.y);
+  		// noFill();
+  		// noStroke();
+  		for(let a = 0; a < TWO_PI; a+=1.1){
+    		let x_offset = map(cos(a - this.phase), -1, 1, 0, 2);
+    		let y_offset = map(sin(a + this.phase), -1, 1, 0, 2);
+    		let r = map(noise(x_offset, y_offset), 0, 1, 10, 40);
+    		let x = r * cos(a);
+    		let y = r * sin(a);
+    		vertex(x, y);
+  		}
+  		endShape(CLOSE);
+  		pop();
+  		this.phase += 0.005
+	}
+
+	appear(){
+		this.shape();
 	}
 
 	move(){
-		this.xoffset += 0.0006;
-		this.yoffset += 0.0006;
-		// console.log("offset: " + this.offset)
-		this.x = noise(this.xoffset) * width;
-		this.y = noise(this.yoffset) * height;
-		// console.log("X: " + this.x + " --- Y: " + this.y);
-		this.appear(this.x, this.y);
+		this.acceleration = p5.Vector.random2D();
+		this.velocity.add(this.acceleration);
+		this.position.add(this.velocity);
+		this.velocity.limit(3);
+		// console.log(this.id + " - Xoffset: " + this.xoffset + " Yoffset: " + this.yoffset)
+		this.appear();
 	}
 
 	live(){
 		if (this.life){
 			// console.log("<" + this.id +".live>")
 			this.move();
-			if(int(random(0,1000)) == 11){
+			if(int(random(0,20000)) == 11){
 				this.die();
 			}
 		}

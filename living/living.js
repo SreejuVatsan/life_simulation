@@ -1,8 +1,14 @@
 
 class Living{
+	static age;
+	static movement;
+	static position;
+	static velocity;
+	static acceleration;
+
 	constructor(){
 		this.life;
-		this.movement;
+		// this.movement;
 		this.birth();
 	}
 
