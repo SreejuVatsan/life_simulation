@@ -1,4 +1,4 @@
-var SingleCellEnum = {
+let SingleCellEnum = {
   CREATURE_1: 1,
   CREATURE_2: 2,
   properties: {
@@ -48,10 +48,9 @@ class Creature_1 extends SingleCell{
 	}
 
 	shape(){
-		
-		beginShape();
 		push();
 		translate(this.position.x, this.position.y);
+		beginShape();
   		// noFill();
   		// noStroke();
   		for(let a = 0; a < TWO_PI; a+=1.1){
@@ -73,9 +72,10 @@ class Creature_1 extends SingleCell{
 
 	move(){
 		this.acceleration = p5.Vector.random2D();
+		this.acceleration.setMag(cos(this.phase) * 0.1);
 		this.velocity.add(this.acceleration);
+		this.velocity.limit(noise(this.phase));
 		this.position.add(this.velocity);
-		this.velocity.limit(3);
 		// console.log(this.id + " - Xoffset: " + this.xoffset + " Yoffset: " + this.yoffset)
 		this.appear();
 	}
