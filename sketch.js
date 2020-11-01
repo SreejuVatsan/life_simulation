@@ -3,7 +3,7 @@ let ecosystem ;
 function setup() {
 	console.log("Width: " + windowWidth + " - Height: " + windowHeight)
 	createCanvas(windowWidth, windowHeight);
-	ecosystem = new Ecosystem(5);
+	ecosystem = new Ecosystem(10);
 }
 
 function draw() {
