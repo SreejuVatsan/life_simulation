@@ -1,4 +1,4 @@
-var SingleCellEnum = {
+let SingleCellEnum = {
   CREATURE_1: 1,
   CREATURE_2: 2,
   properties: {
@@ -14,6 +14,13 @@ class SingleCell extends Living{
 		this.id = this.getId();
 		this.name = SingleCellEnum.properties[this.type].name;
 		this.max_life = SingleCellEnum.properties[this.type].max_life;
+
+		this.position = new createVector(random(0, width), random(0, height));
+		// this.position = new createVector(width/2, height/2);
+		this.velocity = new createVector(0, 0);
+		this.acceleration = new createVector(0, 0);
+		
+		// console.log("X: " + this.x + " --- Y: " + this.y);
 	}
 
 	uniqueId(){
@@ -23,11 +30,6 @@ class SingleCell extends Living{
 
 	getId(){
 		return SingleCellEnum.properties[this.type].code + this.uniqueId();
-	}
-
-	live(){
-		console.log("<SingleCell.live>")
-		this.life = true
 	}
 
 	die(){
@@ -40,6 +42,54 @@ class SingleCell extends Living{
 class Creature_1 extends SingleCell{
 	constructor(){
 		super(SingleCellEnum.CREATURE_1);
+	
+		this.phase = random(0,1000);
+		// console.log("X: " + this.x + " --- Y: " + this.y);
 	}
+
+	shape(){
+		push();
+		translate(this.position.x, this.position.y);
+		beginShape();
+  		// noFill();
+  		// noStroke();
+  		for(let a = 0; a < TWO_PI; a+=1.1){
+    		let x_offset = map(cos(a - this.phase), -1, 1, 0, 2);
+    		let y_offset = map(sin(a + this.phase), -1, 1, 0, 2);
+    		let r = map(noise(x_offset, y_offset), 0, 1, 10, 40);
+    		let x = r * cos(a);
+    		let y = r * sin(a);
+    		vertex(x, y);
+  		}
+  		endShape(CLOSE);
+  		pop();
+  		this.phase += 0.005
+	}
+
+	appear(){
+		this.shape();
+	}
+
+	move(){
+		this.acceleration = p5.Vector.random2D();
+		this.acceleration.setMag(cos(this.phase) * 0.1);
+		this.velocity.add(this.acceleration);
+		this.velocity.limit(noise(this.phase));
+		this.position.add(this.velocity);
+		// console.log(this.id + " - Xoffset: " + this.xoffset + " Yoffset: " + this.yoffset)
+		this.appear();
+	}
+
+	live(){
+		if (this.life){
+			// console.log("<" + this.id +".live>")
+			this.move();
+			if(int(random(0,20000)) == 11){
+				this.die();
+			}
+		}
+		
+	}
+
 
 }

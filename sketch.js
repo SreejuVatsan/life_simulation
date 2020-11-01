@@ -1,14 +1,12 @@
+let ecosystem ;
+
 function setup() {
+	console.log("Width: " + windowWidth + " - Height: " + windowHeight)
 	createCanvas(windowWidth, windowHeight);
-	var c1 = new Creature_1();
-	c1.live();
-	console.log(c1.id);
-	console.log(c1.life);
-	c1.die();
-	console.log(c1.life);
+	ecosystem = new Ecosystem(10);
 }
 
 function draw() {
 	background(235,100,100);
-
+	ecosystem.thrive();
 }
