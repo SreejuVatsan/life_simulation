@@ -16,7 +16,6 @@ class SingleCell extends Living{
 		this.max_life = SingleCellEnum.properties[this.type].max_life;
 
 		this.position = new createVector(random(0, width), random(0, height));
-		// this.position = new createVector(width/2, height/2);
 		this.velocity = new createVector(0, 0);
 		this.acceleration = new createVector(0, 0);
 		
@@ -42,7 +41,7 @@ class SingleCell extends Living{
 class Creature_1 extends SingleCell{
 	constructor(){
 		super(SingleCellEnum.CREATURE_1);
-	
+		this.scale = 0
 		this.phase = random(0,1000);
 		// console.log("X: " + this.x + " --- Y: " + this.y);
 	}
@@ -57,13 +56,16 @@ class Creature_1 extends SingleCell{
     		let x_offset = map(cos(a - this.phase), -1, 1, 0, 2);
     		let y_offset = map(sin(a + this.phase), -1, 1, 0, 2);
     		let r = map(noise(x_offset, y_offset), 0, 1, 10, 40);
-    		let x = r * cos(a);
-    		let y = r * sin(a);
+    		let x = r * cos(a) * this.scale;
+    		let y = r * sin(a) * this.scale;
     		vertex(x, y);
   		}
   		endShape(CLOSE);
   		pop();
   		this.phase += 0.005
+  		if(this.scale <= 1) {
+  			this.scale += 0.2;
+  		}
 	}
 
 	appear(){
@@ -82,14 +84,12 @@ class Creature_1 extends SingleCell{
 
 	live(){
 		if (this.life){
-			// console.log("<" + this.id +".live>")
-			this.move();
-			if(int(random(0,20000)) == 11){
+			if((int(random(0,1000)) == 1) || (this.max_life < 0)){
 				this.die();
 			}
 		}
-		
+		this.move();
+		this.max_life -= random(0.001, 0.009);
 	}
-
 
 }

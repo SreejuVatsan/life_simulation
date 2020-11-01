@@ -8,5 +8,5 @@ function setup() {
 
 function draw() {
 	background(235,100,100);
-	ecosystem.thrive();
+	ecosystem.sustain();
 }

@@ -4,7 +4,11 @@ class Ecosystem{
 		this.limit = limit;
 	}
 
-	thrive(){
+	sustain(){
+		this.creature_1_thrive();
+	}
+
+	creature_1_thrive(){
 		if(this.creature_1.length < this.limit){
 			this.addCreature(this.creature_1);
 		}
